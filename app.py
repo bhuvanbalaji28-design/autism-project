@@ -2,7 +2,9 @@ from flask import Flask, render_template, request, redirect, url_for, session, s
 import os
 import cv2
 import mediapipe as mp
+import pickle
 
+model = pickle.load(open("model.pkl", "rb"))
 app = Flask(__name__)
 app.secret_key = "secret123"
 
@@ -63,9 +65,11 @@ def extract_features(video_path):
 
 # -------- CLASSIFICATION --------
 def classify(video_path):
-    movement = extract_features(video_path)
+    feature = extract_features(video_path)
 
-    if movement > 20:
+    prediction = model.predict([[feature]])[0]
+
+    if prediction == 1:
         return "Autism Behavior Detected"
     else:
         return "Normal Behavior"

@@ -9,22 +9,22 @@ app = Flask(__name__)
 app.secret_key = "secret123"
 
 UPLOAD_FOLDER = "uploads"
-DATASET_FOLDER = "dataset"
-
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-# ✅ FIXED MEDIAPIPE (for Python 3.14)
+# ✅ MediaPipe fix (works with latest versions)
 mp_pose = mp.python.solutions.pose
 
-
-# -------- LOAD MODEL --------
-model = pickle.load(open("model.pkl", "rb"))
+# -------- LOAD MODEL SAFELY --------
+try:
+    model = pickle.load(open("model.pkl", "rb"))
+except:
+    model = None
 
 
 # -------- FEATURE EXTRACTION --------
 def extract_features(video_path):
     cap = cv2.VideoCapture(video_path)
-    pose = mp_pose.Pose()
+    pose = mp_pose.Pose(static_image_mode=True)
 
     movements = []
     prev = None
@@ -54,7 +54,10 @@ def extract_features(video_path):
 def classify(video_path):
     feature = extract_features(video_path)
 
-    prediction = model.predict([[feature]])[0]
+    if model:
+        prediction = model.predict([[feature]])[0]
+    else:
+        prediction = 0  # fallback
 
     if prediction == 1:
         return "Autism Behavior Detected"

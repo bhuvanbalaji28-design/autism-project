@@ -2,3 +2,5 @@ flask
 gunicorn
 opencv-python
 mediapipe
+scikit-learn
+numpy

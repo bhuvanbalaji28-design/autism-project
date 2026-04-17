@@ -1,66 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>NeuroLume AI</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>TinySignals</title>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 
 <body>
 
-<!-- NAVBAR -->
 <div class="navbar">
-    <h2>🧠 NeuroLume AI</h2>
+    <h2>🧠 TinySignals AI</h2>
+    <a href="/logout">Logout</a>
 </div>
 
 <div class="container">
 
-    <h1 class="title">Autism Behaviour Detection</h1>
-    <p class="subtitle">AI-powered video analysis system</p>
+    <h1>Behavior Analysis System</h1>
 
     <div class="card">
-
         <form method="POST" enctype="multipart/form-data">
-            <input type="file" name="video" required>
-            <br><br>
+            <input type="file" name="video" required><br><br>
             <button>Analyze</button>
         </form>
 
-        <h2 class="result">{{ result }}</h2>
-
-        <div class="stats">
-            <p>📊 Dataset: {{ dataset_size }}</p>
-            <p>🎯 Accuracy: {{ accuracy }}%</p>
-        </div>
-
+        <h2>{{ result }}</h2>
     </div>
 
-    <div class="videos">
+    {% if uploaded_video %}
+    <video controls>
+        <source src="/uploads/{{ uploaded_video }}">
+    </video>
+    {% endif %}
 
-        {% if uploaded_video %}
-        <div class="video-card">
-            <h3>Your Input</h3>
-            <video controls>
-                <source src="/uploads/{{ uploaded_video }}">
-            </video>
-        </div>
-        {% endif %}
-
-        {% if comparison_video %}
-        <div class="video-card">
-            <h3>AI Reference</h3>
-            <video controls>
-                <source src="/dataset/{{ comparison_video }}">
-            </video>
-        </div>
-        {% endif %}
-
-    </div>
-
-</div>
-
-<!-- FOOTER -->
-<div class="footer">
-    <p>© 2026 NeuroLume AI | Built with Flask</p>
 </div>
 
 </body>

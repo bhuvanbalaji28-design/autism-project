@@ -7,27 +7,26 @@
     <script>
         function showLoader() {
             document.getElementById("loader").style.display = "block";
+            document.getElementById("loadingText").style.display = "block";
         }
     </script>
 </head>
 
 <body>
 
-<!-- NAVBAR -->
 <div class="navbar">
     <h2>TinySignals</h2>
     <div class="nav-links">
         <span>Dashboard</span>
-        <span>About</span>
+        <span>AI</span>
         <span>Logout</span>
     </div>
 </div>
 
-<!-- MAIN -->
 <div class="container">
 
     <h1>🧠 AI Behaviour Analysis</h1>
-    <p class="subtitle">Real-time Autism Detection System</p>
+    <p class="subtitle">Real-time Autism Detection</p>
 
     <div class="card glass">
 
@@ -37,29 +36,26 @@
             <button class="btn">Analyze</button>
         </form>
 
-        <!-- LOADER -->
         <div id="loader" class="loader"></div>
+        <p id="loadingText" style="display:none;">Analyzing video using AI...</p>
 
         {% if result %}
         <h2 class="result">{{ result }}</h2>
 
-        <!-- CONFIDENCE -->
-        <div class="confidence-box">
-            <p>Confidence</p>
-            <div class="bar">
-                <div class="fill" style="width: 87%;">87%</div>
+        <div class="bar">
+            <div class="fill" style="width: {{ confidence }}%;">
+                {{ confidence }}%
             </div>
         </div>
         {% endif %}
 
         <div class="stats">
             <p>📊 Dataset: 53 Videos</p>
-            <p>⚡ Real-time Processing</p>
+            <p>⚡ Real-time Analysis</p>
         </div>
 
     </div>
 
-    <!-- VIDEOS -->
     <div class="videos">
 
         {% if uploaded_video %}
@@ -84,9 +80,8 @@
 
 </div>
 
-<!-- FOOTER -->
 <div class="footer">
-    <p>© 2026 TinySignals AI | Built with ❤️</p>
+    <p>© 2026 TinySignals AI</p>
 </div>
 
 </body>

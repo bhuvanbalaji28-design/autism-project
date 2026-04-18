@@ -13,27 +13,33 @@ DATASET_FOLDER = "dataset"
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-# -------- MEDIAPIPE FIX --------
+# -------- MEDIAPIPE --------
 mp_pose = mp.python.solutions.pose
 
 # -------- LOAD MODEL SAFELY --------
+model = None
 try:
     model = pickle.load(open("model.pkl", "rb"))
-except:
-    model = None
+except Exception as e:
+    print("Model load failed:", e)
 
 
-# -------- FEATURE EXTRACTION --------
+# -------- FEATURE EXTRACTION (LIGHT VERSION) --------
 def extract_features(video_path):
     cap = cv2.VideoCapture(video_path)
     pose = mp_pose.Pose(static_image_mode=True)
 
     movements = []
     prev = None
+    frame_count = 0
 
     while True:
         ret, frame = cap.read()
         if not ret:
+            break
+
+        frame_count += 1
+        if frame_count > 30:   # 🔥 LIMIT FRAMES (VERY IMPORTANT)
             break
 
         rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -67,13 +73,13 @@ def classify(video_path):
         return "Normal Behavior", "normal"
 
 
-# -------- PICK DATASET VIDEO --------
+# -------- DATASET VIDEO --------
 def get_comparison_video(label):
     for file in os.listdir(DATASET_FOLDER):
         name = file.lower()
 
         if label == "autism":
-            if "arm" in name or "spin" in name or "head" in name:
+            if "arm" in name or "head" in name or "spin" in name:
                 return file
         else:
             if "normal" in name:
@@ -127,7 +133,6 @@ def home():
         result, label = classify(filepath)
         uploaded_video = file.filename
 
-        # 🔥 GET DATASET VIDEO
         comparison_video = get_comparison_video(label)
 
     return render_template(

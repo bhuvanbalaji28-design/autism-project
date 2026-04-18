@@ -1,37 +1,18 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>TinySignals</title>
-    <link rel="stylesheet" href="/static/style.css">
-</head>
+<form method="POST" enctype="multipart/form-data">
+    <input type="file" name="video">
+    <button>Upload</button>
+</form>
 
-<body>
+<h2>{{ result }}</h2>
 
-<div class="navbar">
-    <h2>🧠 TinySignals AI</h2>
-    <a href="/logout">Logout</a>
-</div>
+{% if uploaded_video %}
+<video width="300" controls>
+    <source src="/uploads/{{ uploaded_video }}">
+</video>
+{% endif %}
 
-<div class="container">
-
-    <h1>Behavior Analysis System</h1>
-
-    <div class="card">
-        <form method="POST" enctype="multipart/form-data">
-            <input type="file" name="video" required><br><br>
-            <button>Analyze</button>
-        </form>
-
-        <h2>{{ result }}</h2>
-    </div>
-
-    {% if uploaded_video %}
-    <video controls>
-        <source src="/uploads/{{ uploaded_video }}">
-    </video>
-    {% endif %}
-
-</div>
-
-</body>
-</html>
+{% if comparison_video %}
+<video width="300" controls>
+    <source src="/dataset/{{ comparison_video }}">
+</video>
+{% endif %}

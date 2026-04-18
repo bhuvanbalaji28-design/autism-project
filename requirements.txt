@@ -1,4 +1,5 @@
-flask
-gunicorn
+streamlit
 opencv-python
-mediapipe
+mediapipe==0.10.30
+scikit-learn
+numpy

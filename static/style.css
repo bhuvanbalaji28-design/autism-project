@@ -1,46 +1,75 @@
 body {
     margin: 0;
-    font-family: 'Segoe UI';
-    background: #0f172a;
+    font-family: Arial;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
     color: white;
+    text-align: center;
 }
 
-.center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+.container {
+    padding: 40px;
 }
 
-/* Navbar */
-.navbar {
-    background: #020617;
-    padding: 15px;
-    display: flex;
-    justify-content: space-between;
+h1 {
+    font-size: 40px;
+}
+
+.subtitle {
+    color: #94a3b8;
 }
 
 /* Card */
 .card {
     background: rgba(255,255,255,0.05);
     padding: 25px;
-    border-radius: 10px;
-    width: 300px;
+    border-radius: 15px;
+    width: 350px;
     margin: auto;
-    margin-top: 50px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
 }
 
 /* Button */
 button {
-    padding: 10px;
-    background: linear-gradient(45deg, #3b82f6, #9333ea);
+    padding: 10px 20px;
     border: none;
-    color: white;
     border-radius: 8px;
+    background: #3b82f6;
+    color: white;
+    cursor: pointer;
 }
 
-/* Video */
+button:hover {
+    background: #2563eb;
+}
+
+/* Result */
+.result {
+    margin-top: 15px;
+    color: #22c55e;
+}
+
+/* Stats */
+.stats {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #cbd5f5;
+}
+
+/* Videos */
+.videos {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.video-box {
+    background: rgba(255,255,255,0.05);
+    padding: 15px;
+    border-radius: 10px;
+}
+
 video {
     width: 300px;
-    margin-top: 20px;
+    border-radius: 10px;
 }

@@ -26,10 +26,18 @@
     </div>
 
     {% if uploaded_video %}
-    <video controls>
-        <source src="/uploads/{{ uploaded_video }}">
-    </video>
-    {% endif %}
+<h3>Your Video</h3>
+<video controls width="300">
+    <source src="/uploads/{{ uploaded_video }}">
+</video>
+{% endif %}
+
+{% if comparison_video %}
+<h3>AI Comparison</h3>
+<video controls width="300">
+    <source src="/dataset/{{ comparison_video }}">
+</video>
+{% endif %}
 
 </div>
 

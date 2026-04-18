@@ -3,36 +3,67 @@
 <head>
     <title>TinySignals AI</title>
     <link rel="stylesheet" href="/static/style.css">
+
+    <script>
+        function showLoader() {
+            document.getElementById("loader").style.display = "block";
+        }
+    </script>
 </head>
 
 <body>
 
+<!-- NAVBAR -->
+<div class="navbar">
+    <h2>TinySignals</h2>
+    <div class="nav-links">
+        <span>Dashboard</span>
+        <span>About</span>
+        <span>Logout</span>
+    </div>
+</div>
+
+<!-- MAIN -->
 <div class="container">
 
-    <h1>🧠 TinySignals AI</h1>
-    <p class="subtitle">Autism Behaviour Detection System</p>
+    <h1>🧠 AI Behaviour Analysis</h1>
+    <p class="subtitle">Real-time Autism Detection System</p>
 
-    <div class="card">
+    <div class="card glass">
 
-        <form method="POST" enctype="multipart/form-data">
+        <form method="POST" enctype="multipart/form-data" onsubmit="showLoader()">
             <input type="file" name="video" required>
             <br><br>
-            <button>Analyze</button>
+            <button class="btn">Analyze</button>
         </form>
 
+        <!-- LOADER -->
+        <div id="loader" class="loader"></div>
+
+        {% if result %}
         <h2 class="result">{{ result }}</h2>
 
+        <!-- CONFIDENCE -->
+        <div class="confidence-box">
+            <p>Confidence</p>
+            <div class="bar">
+                <div class="fill" style="width: 87%;">87%</div>
+            </div>
+        </div>
+        {% endif %}
+
         <div class="stats">
-            <p>📊 Dataset Size: 53 Videos</p>
-            <p>🎯 Accuracy: 87%</p>
+            <p>📊 Dataset: 53 Videos</p>
+            <p>⚡ Real-time Processing</p>
         </div>
 
     </div>
 
+    <!-- VIDEOS -->
     <div class="videos">
 
         {% if uploaded_video %}
-        <div class="video-box">
+        <div class="video-box glass">
             <h3>Your Video</h3>
             <video controls>
                 <source src="/uploads/{{ uploaded_video }}">
@@ -41,8 +72,8 @@
         {% endif %}
 
         {% if comparison_video %}
-        <div class="video-box">
-            <h3>Comparison Video</h3>
+        <div class="video-box glass">
+            <h3>AI Comparison</h3>
             <video controls>
                 <source src="/dataset/{{ comparison_video }}">
             </video>
@@ -51,6 +82,11 @@
 
     </div>
 
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+    <p>© 2026 TinySignals AI | Built with ❤️</p>
 </div>
 
 </body>

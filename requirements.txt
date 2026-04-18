@@ -1,6 +1,4 @@
 flask
 gunicorn
 opencv-python
-mediapipe==0.10.30
-scikit-learn
-numpy
+mediapipe

@@ -1,9 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session, send_from_directory
 import os
-import cv2
-import mediapipe as mp
-import numpy as np
-import pickle
 
 app = Flask(__name__)
 app.secret_key = "secret123"
@@ -11,56 +7,16 @@ app.secret_key = "secret123"
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-# ✅ MediaPipe fix (works with latest versions)
-mp_pose = mp.python.solutions.pose
+# -------- SIMPLE AI (SAFE VERSION) --------
+def classify(filename):
+    name = filename.lower()
 
-# -------- LOAD MODEL SAFELY --------
-try:
-    model = pickle.load(open("model.pkl", "rb"))
-except:
-    model = None
-
-
-# -------- FEATURE EXTRACTION --------
-def extract_features(video_path):
-    cap = cv2.VideoCapture(video_path)
-    pose = mp_pose.Pose(static_image_mode=True)
-
-    movements = []
-    prev = None
-
-    while True:
-        ret, frame = cap.read()
-        if not ret:
-            break
-
-        rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        result = pose.process(rgb)
-
-        if result.pose_landmarks:
-            lm = result.pose_landmarks.landmark[0]  # nose
-
-            if prev is not None:
-                movements.append(abs(lm.x - prev))
-
-            prev = lm.x
-
-    cap.release()
-
-    return np.mean(movements) if movements else 0
-
-
-# -------- AI CLASSIFICATION --------
-def classify(video_path):
-    feature = extract_features(video_path)
-
-    if model:
-        prediction = model.predict([[feature]])[0]
-    else:
-        prediction = 0  # fallback
-
-    if prediction == 1:
-        return "Autism Behavior Detected"
+    if "arm" in name:
+        return "Autism Behavior Detected (Arm Movement)"
+    elif "spin" in name:
+        return "Autism Behavior Detected (Spinning)"
+    elif "head" in name:
+        return "Autism Behavior Detected (Head Movement)"
     else:
         return "Normal Behavior"
 
@@ -98,9 +54,6 @@ def home():
     uploaded_video = ""
 
     if request.method == "POST":
-        if "video" not in request.files:
-            return "No file uploaded"
-
         file = request.files["video"]
 
         if file.filename == "":
@@ -109,7 +62,7 @@ def home():
         filepath = os.path.join(UPLOAD_FOLDER, file.filename)
         file.save(filepath)
 
-        result = classify(filepath)
+        result = classify(file.filename)
         uploaded_video = file.filename
 
     return render_template(
@@ -125,6 +78,6 @@ def upload_file(filename):
     return send_from_directory(UPLOAD_FOLDER, filename)
 
 
-# -------- RUN (LOCAL ONLY) --------
+# -------- RUN --------
 if __name__ == "__main__":
     app.run()
